@@ -66,7 +66,7 @@ export default function Home({ data }: PageProps<Props>) {
 							/>
 							<button
 								type="submit"
-								class="text-blue-300 font-bold outline-none rounded focus-visible:border-blue-200 focus:text-blue-400 hover:text-blue-400"
+								class="text-blue-500 font-bold outline-none rounded focus-visible:border-blue-200 focus:text-blue-400 hover:text-blue-400"
 								data-umami-event="submit-search"
 							>
 								cached?
@@ -81,7 +81,7 @@ export default function Home({ data }: PageProps<Props>) {
 							<a
 								href={data.found}
 								rel="noopener noreferrer"
-								class="font-bold text-blue-300 hover:text-blue-400"
+								class="font-bold text-blue-500 hover:text-blue-400"
 							>
 								{data.found}
 							</a>{' '}
@@ -94,7 +94,11 @@ export default function Home({ data }: PageProps<Props>) {
 				)}
 				{!data?.notFound && (
 					<aside class="absolute bottom-2 left-2">
-						<a href="https://github.com/benmneb/is-it-cached/" target="_blank">
+						<a
+							href="https://github.com/benmneb/is-it-cached/"
+							target="_blank"
+							aria-label="View source code"
+						>
 							<IconBrandGithub class="w-8 h-8 md:w-12 md:h-12 text-gray-400 hover:text-black" />
 						</a>
 					</aside>
@@ -106,18 +110,21 @@ export default function Home({ data }: PageProps<Props>) {
 							<a
 								href={fix(data.notFound)}
 								rel="noopener noreferrer"
-								class="font-bold text-red-300 hover:text-red-400"
+								class="font-bold text-red-500 hover:text-red-400"
 							>
 								{data.notFound}
 							</a>{' '}
 							is not cached. 😵
 						</section>
-						<aside class="absolute bottom-2 left-2">
+						<aside class="absolute bottom-0 left-2">
 							<a
 								href={`https://github.com/benmneb/is-it-cached/issues/new?title=New+bug+report&body=There+is+a+problem+with+${data.notFound}`}
 								target="_blank"
+								aria-label="Report a problem with this page"
 							>
-								<IconMessageReport class="w-8 h-8 md:w-12 md:h-12 text-gray-400 hover:text-black" />
+								<button class="rounded text-gray-400 hover:text-black outline-none focus-visible:border-blue-200 focus:text-black">
+									<IconMessageReport class="w-8 h-8 md:w-12 md:h-12" />
+								</button>
 							</a>
 						</aside>
 					</>

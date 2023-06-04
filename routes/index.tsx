@@ -47,7 +47,7 @@ export default function Home({ data }: PageProps<Props>) {
 					async
 					src="https://umamalytics.vercel.app/script.js"
 					data-website-id="340fbcac-cb8a-4677-856d-50899d0f36ed"
-					data-host-url="isitcached.com"
+					data-host-url="isitcached.com,isitcached.deno.dev"
 				></script>
 			</Head>
 			<main class="p-4 mx-auto mt-[16%] max-w-full sm:max-w-screen-sm md:max-w-screen-md flex flex-col items-center justify-center gap-6 text-xl sm:text-3xl">

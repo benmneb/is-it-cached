@@ -1,4 +1,3 @@
-import { Head } from '$fresh/runtime.ts'
 import { Handlers, PageProps } from '$fresh/server.ts'
 import IconBrandGithub from 'https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/brand-github.tsx'
 import IconMessageReport from 'https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/message-report.tsx'
@@ -36,100 +35,87 @@ function fix(url: Props['notFound']) {
 
 export default function Home({ data }: PageProps<Props>) {
 	return (
-		<>
-			<Head>
-				<title>Is it cached?</title>
-				<meta
-					name="description"
-					content="Easily find a cached version of websites - whether they have a paywall or not."
-				/>
-				<script
-					async
-					src="https://umamalytics.vercel.app/script.js"
-					data-website-id="340fbcac-cb8a-4677-856d-50899d0f36ed"
-					data-host-url="isitcached.com,isitcached.deno.dev"
-				></script>
-			</Head>
-			<main class="p-4 mx-auto mt-[16%] max-w-full sm:max-w-screen-sm md:max-w-screen-md flex flex-col items-center justify-center gap-6 text-xl sm:text-3xl">
-				{!data?.found && (
-					<section class="flex items-center justify-center flex-wrap gap-2">
-						is
-						<form
-							method="post"
-							class="flex flex-row items-center justify-center flex-wrap gap-2"
+		<main class="p-4 mt-[16%] max-w-full flex flex-col items-center justify-center gap-6 lg:gap-10">
+			{!data?.found && (
+				<section class="flex items-center justify-center flex-wrap gap-2">
+					is
+					<form
+						method="post"
+						class="flex flex-row items-center justify-center flex-wrap gap-2"
+					>
+						<input
+							type="text"
+							name="url"
+							placeholder="www.example.com"
+							class="bg-transparent rounded-full py-2 px-4 md:px-5 lg:px-6 outline-none w-64 sm:w-72 md:w-96 lg:w-[432px] border-2 border-neutral-400 hover:(border-transparent shadow-google) focus-visible:(border-transparent shadow-google) dark:hover:(bg-neutral-700 border-neutral-700) dark:focus-visible:(bg-neutral-700 border-neutral-700) placeholder:(text-neutral-400)"
+						/>
+						<button
+							type="submit"
+							class="text-sky-600 dark:text-sky-400 font-bold outline-none rounded focus-visible:(text-sky-500 underline) focus:text-sky-500 hover:text-sky-500"
+							data-umami-event="submit-search"
 						>
-							<input
-								type="text"
-								name="url"
-								placeholder="www.example.com"
-								class="outline-none rounded p-2 border-2 border-gray-300 focus-visible:border-blue-200 focus:ring w-56 sm:w-auto"
-							/>
-							<button
-								type="submit"
-								class="text-blue-500 font-bold outline-none rounded focus-visible:border-blue-200 focus:text-blue-400 hover:text-blue-400"
-								data-umami-event="submit-search"
-							>
-								cached?
-							</button>
-						</form>
-					</section>
-				)}
-				{!!data?.found && (
-					<section class="flex flex-col gap-6 text-center">
-						<div>
-							Yes,{' '}
-							<a
-								href={data.found}
-								rel="noopener noreferrer"
-								class="font-bold text-blue-500 hover:text-blue-400"
-							>
-								{data.found}
-							</a>{' '}
-							is cached! 🥳
-						</div>
-						<div>
-							<CountDown url={data.found} />
-						</div>
-					</section>
-				)}
-				{!data?.notFound && (
-					<aside class="absolute bottom-2 left-2">
+							cached?
+						</button>
+					</form>
+				</section>
+			)}
+			{!!data?.found && (
+				<section class="flex flex-col gap-6 lg:gap-10 text-center">
+					<div class="py-2">
+						Yes,{' '}
 						<a
-							href="https://github.com/benmneb/is-it-cached/"
-							target="_blank"
-							aria-label="View source code"
+							href={data.found}
+							rel="noopener noreferrer"
+							class="text-sky-600 dark:text-sky-400 font-bold outline-none rounded hover:text-sky-500 [line-break:loose]"
 						>
-							<IconBrandGithub class="w-8 h-8 md:w-12 md:h-12 text-gray-400 hover:text-black" />
+							{data.found}
+						</a>{' '}
+						is cached! 🥳
+					</div>
+					<div>
+						<CountDown url={data.found} />
+					</div>
+				</section>
+			)}
+			{!data?.notFound && (
+				<aside class="absolute bottom-0 left-2 overflow-hidden">
+					<a
+						href="https://github.com/benmneb/is-it-cached/"
+						target="_blank"
+						aria-label="View source code"
+					>
+						<button class="rounded text-gray-400 hover:text-neutral-800 dark:hover:text-neutral-50 outline-none focus-visible:(text-neutral-800) dark:focus-visible:(text-neutral-50) focus:text-neutral-800">
+							<IconBrandGithub class="w-8 h-8 md:w-12 md:h-12" />
+						</button>
+					</a>
+				</aside>
+			)}
+			{!!data?.notFound && (
+				<>
+					<section class="text-center">
+						No,{' '}
+						<a
+							href={fix(data.notFound)}
+							rel="noopener noreferrer"
+							class="font-bold text-rose-500 hover:text-rose-400 [line-break:loose]"
+						>
+							{data.notFound}
+						</a>{' '}
+						is not cached. 😵
+					</section>
+					<aside class="absolute bottom-0 left-2 overflow-hidden">
+						<a
+							href={`https://github.com/benmneb/is-it-cached/issues/new?title=New+bug+report&body=There+is+a+problem+with+${data.notFound}`}
+							target="_blank"
+							aria-label="Report a problem with this page"
+						>
+							<button class="rounded text-gray-400 hover:text-neutral-800 dark:hover:text-neutral-50 outline-none focus-visible:(text-neutral-800) dark:focus-visible:(text-neutral-50) focus:text-neutral-800">
+								<IconMessageReport class="w-8 h-8 md:w-12 md:h-12" />
+							</button>
 						</a>
 					</aside>
-				)}
-				{!!data?.notFound && (
-					<>
-						<section class="text-center">
-							No,{' '}
-							<a
-								href={fix(data.notFound)}
-								rel="noopener noreferrer"
-								class="font-bold text-red-500 hover:text-red-400"
-							>
-								{data.notFound}
-							</a>{' '}
-							is not cached. 😵
-						</section>
-						<aside class="absolute bottom-0 left-2">
-							<a
-								href={`https://github.com/benmneb/is-it-cached/issues/new?title=New+bug+report&body=There+is+a+problem+with+${data.notFound}`}
-								target="_blank"
-								aria-label="Report a problem with this page"
-							>
-								<button class="rounded text-gray-400 hover:text-black outline-none focus-visible:border-blue-200 focus:text-black">
-									<IconMessageReport class="w-8 h-8 md:w-12 md:h-12" />
-								</button>
-							</a>
-						</aside>
-					</>
-				)}
-			</main>
-		</>
+				</>
+			)}
+		</main>
 	)
 }

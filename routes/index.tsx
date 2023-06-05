@@ -84,7 +84,10 @@ export default function Home({ data }: PageProps<Props>) {
 						target="_blank"
 						aria-label="View source code"
 					>
-						<button class="rounded text-gray-400 hover:text-neutral-800 dark:hover:text-neutral-50 outline-none focus-visible:(text-neutral-800) dark:focus-visible:(text-neutral-50) focus:text-neutral-800">
+						<button
+							class="rounded text-gray-400 hover:text-neutral-800 dark:hover:text-neutral-50 outline-none focus-visible:(text-neutral-800) dark:focus-visible:(text-neutral-50) focus:text-neutral-800"
+							aria-label="View source code"
+						>
 							<IconBrandGithub class="w-8 h-8 md:w-12 md:h-12" />
 						</button>
 					</a>
@@ -109,7 +112,10 @@ export default function Home({ data }: PageProps<Props>) {
 							target="_blank"
 							aria-label="Report a problem with this page"
 						>
-							<button class="rounded text-gray-400 hover:text-neutral-800 dark:hover:text-neutral-50 outline-none focus-visible:(text-neutral-800) dark:focus-visible:(text-neutral-50) focus:text-neutral-800">
+							<button
+								class="rounded text-gray-400 hover:text-neutral-800 dark:hover:text-neutral-50 outline-none focus-visible:(text-neutral-800) dark:focus-visible:(text-neutral-50) focus:text-neutral-800"
+								aria-label="Report a problem with this page"
+							>
 								<IconMessageReport class="w-8 h-8 md:w-12 md:h-12" />
 							</button>
 						</a>

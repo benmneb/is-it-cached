@@ -3,33 +3,47 @@ import IconBrandGithub from 'https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/bran
 import IconMessageReport from 'https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/message-report.tsx'
 import CountDown from '../islands/count-down.tsx'
 
+export type Sources = 'google' | 'wayback'
 interface Props {
-	notFound: string
-	found: string
+	notFound?: string
+	found?: string
+	on?: Sources
 }
 
-const googlesCache = 'http://webcache.googleusercontent.com/search?q=cache:'
+export const sources: Record<Sources, string> = {
+	google: 'http://webcache.googleusercontent.com/search?q=cache:',
+	wayback: 'http://web.archive.org/',
+}
 
-export const handler: Handlers = {
+export const handler: Handlers<Props> = {
 	async POST(req, ctx) {
 		const form = await req.formData()
 		const url = String(form.get('url'))
 		if (!url) return ctx.render()
 
 		try {
-			const response = await fetch(googlesCache + url)
+			const response = await fetch(sources.google + url)
 			if (!response.ok) throw new Error('thats not OK')
 			const text = await response.text()
 			if (!text.includes("This is Google's cache of")) throw new Error('uh oh')
-			return ctx.render({ found: url })
+			return ctx.render({ found: url, on: 'google' })
 		} catch (e) {
-			return ctx.render({ notFound: url })
+			try {
+				const response = await fetch(sources.wayback + url)
+				if (!response.ok) throw new Error('not cool man')
+				const text = await response.text()
+				if (text.includes('The Wayback Machine has not archived that URL'))
+					throw new Error('shit outta luck mate')
+				return ctx.render({ found: url, on: 'wayback' })
+			} catch (err) {
+				return ctx.render({ notFound: url })
+			}
 		}
 	},
 }
 
 function fix(url: Props['notFound']) {
-	if (url.startsWith('https://') || url.startsWith('http://')) return url
+	if (url?.startsWith('https://') || url?.startsWith('http://')) return url
 	return `https://${url}`
 }
 
@@ -37,21 +51,21 @@ export default function Home({ data }: PageProps<Props>) {
 	return (
 		<main class="p-4 mt-[16%] max-w-full flex flex-col items-center justify-center gap-6 lg:gap-10">
 			{!data?.found && (
-				<section class="flex items-center justify-center flex-wrap gap-2">
+				<section class="flex items-center justify-center flex-col min-[398px]:flex-row gap-2">
 					is
 					<form
 						method="post"
-						class="flex flex-row items-center justify-center flex-wrap gap-2"
+						class="flex items-center justify-center flex-col min-[398px]:flex-row gap-2"
 					>
 						<input
 							type="text"
 							name="url"
 							placeholder="www.example.com"
-							class="bg-transparent rounded-full py-2 px-4 md:px-5 lg:px-6 outline-none w-64 sm:w-72 md:w-96 lg:w-[432px] border-2 border-neutral-400 hover:(border-transparent shadow-google) focus-visible:(border-transparent shadow-google) dark:hover:(bg-neutral-700 border-neutral-700) dark:focus-visible:(bg-neutral-700 border-neutral-700) placeholder:(text-neutral-400)"
+							class="bg-transparent rounded-full py-2 px-4 md:px-5 lg:px-6 outline-none placeholder:text-center min-[398px]:placeholder:text-left w-64 sm:w-72 md:w-96 lg:w-[432px] border-2 border-neutral-400 hover:(border-transparent shadow-google) focus:(border-transparent shadow-google) dark:hover:(bg-neutral-700 border-neutral-700) dark:focus:(bg-neutral-700 border-neutral-700) placeholder:(text-neutral-400)"
 						/>
 						<button
 							type="submit"
-							class="text-sky-600 dark:text-sky-400 font-bold outline-none rounded focus-visible:(text-sky-500 underline) focus:text-sky-500 hover:text-sky-500"
+							class="text-sky-600 dark:text-sky-400 font-bold outline-none rounded focus-visible:(text-sky-500 ring-4 ring-sky-500) focus:text-sky-500 hover:text-sky-500"
 							data-umami-event="submit-search"
 						>
 							cached?
@@ -66,14 +80,14 @@ export default function Home({ data }: PageProps<Props>) {
 						<a
 							href={data.found}
 							rel="noopener noreferrer"
-							class="text-sky-600 dark:text-sky-400 font-bold outline-none rounded hover:text-sky-500 [line-break:loose]"
+							class="text-sky-600 dark:text-sky-400 font-bold outline-none rounded hover:text-sky-500 [line-break:loose] [word-break:break-word]"
 						>
 							{data.found}
 						</a>{' '}
 						is cached! 🥳
 					</div>
 					<div>
-						<CountDown url={data.found} />
+						<CountDown url={data.found} source={data.on!} />
 					</div>
 				</section>
 			)}
@@ -100,7 +114,7 @@ export default function Home({ data }: PageProps<Props>) {
 						<a
 							href={fix(data.notFound)}
 							rel="noopener noreferrer"
-							class="font-bold text-rose-500 hover:text-rose-400 [line-break:loose]"
+							class="font-bold text-rose-600 dark:text-rose-500 hover:text-rose-500 dark:hover:text-rose-600 [line-break:loose] [word-break:break-word]"
 						>
 							{data.notFound}
 						</a>{' '}

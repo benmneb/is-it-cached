@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'preact/hooks'
+import { Sources, sources } from '../routes/index.tsx'
 
 interface Props {
 	url: string
+	source: Sources
 }
 
-const googlesCache = 'http://webcache.googleusercontent.com/search?q=cache:'
-
-export default function CountDown({ url }: Props) {
+export default function CountDown({ url, source }: Props) {
 	const [count, setCount] = useState<number>(3)
 
 	useEffect(() => {
@@ -14,7 +14,7 @@ export default function CountDown({ url }: Props) {
 		setTimeout(() => setCount((prev) => prev - 1), 1000)
 	}, [count])
 
-	if (count === 0) window.location.replace(googlesCache + url)
+	if (count === 0) window.location.replace(sources[source] + url)
 
 	return <div>Redirecting in... {count || '🚀'}</div>
 }

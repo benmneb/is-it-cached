@@ -1,8 +1,12 @@
 # Is it cached?
 
-Easily find a
-[cached](https://support.google.com/websearch/answer/1687222?hl=en) version of
-websites - whether they have a paywall or not.
+[Quickly](https://pagespeed.web.dev/analysis/https-isitcached-com/pow426p9x2?form_factor=desktop)
+find a cached version of websites - whether they have a paywall or not.
+
+<!-- Google takes a [snapshot](https://support.google.com/websearch/answer/1687222)
+of each web page as a backup in case the current page isn't available. So does
+the [Internet Archive](https://web.archive.org/). This tool allows you to search
+both in one place. -->
 
 [![Made with Fresh](https://fresh.deno.dev/fresh-badge-dark.svg)](https://fresh.deno.dev)
 

@@ -2,7 +2,7 @@ import { Handlers, PageProps } from '$fresh/server.ts'
 import IconBrandGithub from 'https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/brand-github.tsx'
 import IconMessageReport from 'https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/message-report.tsx'
 import CountDown from '../islands/count-down.tsx'
-import FormContent from '../islands/form-content.tsx'
+import Form from '../islands/form.tsx'
 
 export type Sources = 'google' | 'wayback'
 
@@ -55,12 +55,7 @@ export default function Home({ data }: PageProps<Props>) {
 			{!data?.found && (
 				<section class="flex items-center justify-center flex-col min-[398px]:flex-row gap-2">
 					is
-					<form
-						method="post"
-						class="flex items-center justify-center flex-col min-[398px]:flex-row gap-2"
-					>
-						<FormContent />
-					</form>
+					<Form />
 				</section>
 			)}
 			{!!data?.found && (

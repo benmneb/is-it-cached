@@ -27,6 +27,10 @@ export default function Form() {
 				}`}
 				onInput={(e) => setInput(e.currentTarget.value)}
 				ref={inputRef}
+				autoCapitalize="off"
+				autoCorrect="off"
+				autoComplete="url"
+				spellCheck={false}
 			/>
 			<button
 				type="submit"

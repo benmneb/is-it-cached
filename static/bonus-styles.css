@@ -1,0 +1,18 @@
+.loading {
+  animation: animateBg 1s linear infinite;
+  background-image: linear-gradient(90deg,#818cf8,#c084fc,#a78bfa,#818cf8,#c084fc);
+  background-size: 400% 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+  .loading {
+    animation: animateBg 1s linear infinite;
+    background-image: linear-gradient(90deg,#4f46e5,#7c3aed,#9333ea,#4f46e5,#7c3aed);
+    background-size: 400% 100%;
+  }
+}
+
+@keyframes animateBg {
+  0% { background-position: 100% 0%; }
+  100% { background-position: 0% 0%; }
+}

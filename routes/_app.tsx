@@ -1,4 +1,4 @@
-import { Head, asset } from '$fresh/runtime.ts'
+import { Head } from '$fresh/runtime.ts'
 import { AppProps } from '$fresh/src/server/types.ts'
 
 export default function App({ Component }: AppProps) {
@@ -17,7 +17,6 @@ export default function App({ Component }: AppProps) {
 					data-website-id="340fbcac-cb8a-4677-856d-50899d0f36ed"
 					data-domains="isitcached.com,isitcached.deno.dev"
 				></script>
-				<link rel="stylesheet" href={asset('/bonus-styles.css')} />
 			</Head>
 			<body class="bg-neutral-50 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-50 text-xl sm:text-2xl md:text-3xl lg:text-4xl max-w-full lg:max-w-screen-lg mx-auto">
 				<Component />

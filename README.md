@@ -1,7 +1,13 @@
-# Is it cached?
+# 📦 Is it cached?
 
 [Quickly](https://pagespeed.web.dev/analysis/https-isitcached-com/pow426p9x2?form_factor=desktop)
-find a cached version of websites - whether they have a paywall or not.
+find a cached version of websites. Whether there is a paywall or it's
+temporarily down, odds are it has been cached somewhere and is still freely
+available to view.
+
+Simply paste the URL you are looking for into
+[the website](https://isitcached.com), or just append `isitcached.com/` to the
+start of the website you want to check, ie. `isitcached.com/www.example.com`.
 
 <!-- Google takes a [snapshot](https://support.google.com/websearch/answer/1687222)
 of each web page as a backup in case the current page isn't available. So does

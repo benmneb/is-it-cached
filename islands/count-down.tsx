@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'preact/hooks'
-import { Sources, sources } from '../routes/index.tsx'
+import { Sources, sources } from '../routes/[...url].tsx'
 
 interface Props {
 	url: string

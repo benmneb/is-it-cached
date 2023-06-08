@@ -44,9 +44,16 @@ export const handler: Handlers<Props> = {
 	async POST(req, ctx) {
 		const form = await req.formData()
 		const url = String(form.get('url'))
-		if (!url) return ctx.render()
-
 		const headers = new Headers()
+
+		if (!url) {
+			headers.set('location', '/')
+			return new Response(null, {
+				status: 303,
+				headers,
+			})
+		}
+
 		headers.set('location', `/${url}`)
 		return new Response(null, {
 			status: 303,
@@ -76,7 +83,7 @@ export default function IsItCached({ data }: PageProps<Props>) {
 						</a>{' '}
 						is not cached. 😵
 					</section>
-					<aside class="absolute bottom-0 left-2 overflow-hidden">
+					<aside class="fixed bottom-0 left-2 overflow-hidden">
 						<a
 							href={`https://github.com/benmneb/is-it-cached/issues/new?title=New+bug+report&body=There+is+a+problem+with+${data.notFound}`}
 							target="_blank"
@@ -139,7 +146,7 @@ export default function IsItCached({ data }: PageProps<Props>) {
 				</section>
 			)}
 			{!data?.notFound && (
-				<aside class="absolute bottom-0 left-2 overflow-hidden">
+				<aside class="fixed bottom-0 left-2 overflow-hidden">
 					<a
 						href="https://github.com/benmneb/is-it-cached/"
 						target="_blank"

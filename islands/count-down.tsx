@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'preact/hooks'
-import { Sources, sources } from '../routes/[...url].tsx'
 
 interface Props {
-	url: string
-	source: Sources
+	redirectTo: string
 }
 
-export default function CountDown({ url, source }: Props) {
+export default function CountDown({ redirectTo }: Props) {
 	const [count, setCount] = useState<number>(3)
 
 	useEffect(() => {
@@ -14,7 +12,7 @@ export default function CountDown({ url, source }: Props) {
 		setTimeout(() => setCount((prev) => prev - 1), 1000)
 	}, [count])
 
-	if (count === 0) window.location.replace(sources[source] + url)
+	if (count === 0) window.location.replace(redirectTo)
 
 	return <div>Redirecting in... {count || '🚀'}</div>
 }

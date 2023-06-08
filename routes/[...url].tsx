@@ -3,17 +3,15 @@ import IconBrandGithub from 'https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/bran
 import IconMessageReport from 'https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/message-report.tsx'
 import CountDown from '../islands/count-down.tsx'
 
-export type Sources = 'google' | 'wayback'
-
 interface Props {
 	notFound?: string
 	found?: string
-	on?: Sources
+	redirectTo?: string
 }
 
-export const sources: Record<Sources, string> = {
+const sources = {
 	google: 'http://webcache.googleusercontent.com/search?q=cache:',
-	wayback: 'http://web.archive.org/',
+	wayback: 'https://archive.org/wayback/available?url=',
 }
 
 export const config: RouteConfig = {
@@ -30,15 +28,14 @@ export const handler: Handlers<Props> = {
 			if (!response.ok) throw new Error('thats not OK')
 			const text = await response.text()
 			if (!text.includes("This is Google's cache of")) throw new Error('uh oh')
-			return ctx.render({ found: url, on: 'google' })
+			return ctx.render({ found: url, redirectTo: sources.google + url })
 		} catch (e) {
 			try {
 				const response = await fetch(sources.wayback + url)
-				if (!response.ok) throw new Error('not cool man')
-				const text = await response.text()
-				if (text.includes('The Wayback Machine has not archived that URL'))
-					throw new Error('shit outta luck mate')
-				return ctx.render({ found: url, on: 'wayback' })
+				const json = await response.json()
+				const data = json?.archived_snapshots?.closest
+				if (!data?.available) throw new Error('aw shucks')
+				return ctx.render({ found: url, redirectTo: data.url })
 			} catch (err) {
 				return ctx.render({ notFound: url })
 			}
@@ -68,7 +65,7 @@ export default function IsItCached({ data }: PageProps<Props>) {
 		<main class="p-4 mt-[16%] max-w-full flex flex-col items-center justify-center gap-6 lg:gap-10">
 			{!!data?.notFound && (
 				<>
-					<section class="text-center py-2">
+					<section class="text-center py-2 md:pb-1 lg:py-1">
 						No,{' '}
 						<a
 							href={fix(data.notFound)}
@@ -95,18 +92,19 @@ export default function IsItCached({ data }: PageProps<Props>) {
 					</aside>
 				</>
 			)}
+			{!data?.found && !data?.notFound && <ins class="py-6 pb-5 sm:py-6" />}
 			{!data?.found && (
-				<section class="flex items-center justify-center flex-col min-[398px]:flex-row gap-2">
+				<section class="flex items-center justify-center flex-col min-[350px]:flex-row gap-2">
 					is
 					<form
 						method="post"
-						class="flex items-center justify-center flex-col min-[398px]:flex-row gap-2"
+						class="flex items-center justify-center flex-col min-[350px]:flex-row gap-2"
 					>
 						<input
 							type="text"
 							name="url"
 							placeholder="www.example.com"
-							class="bg-transparent rounded-full py-2 px-4 md:px-5 lg:px-6 outline-none placeholder:text-center min-[398px]:placeholder:text-left w-64 sm:w-72 md:w-96 lg:w-[432px] border-2 border-neutral-400 dark:border-neutral-700 hover:(border-transparent shadow-google) focus:(border-transparent shadow-google) dark:hover:(bg-neutral-700 border-neutral-700) dark:focus:(bg-neutral-700 border-neutral-700) placeholder:(text-neutral-400)"
+							class="bg-transparent rounded-full py-2 px-4 md:px-5 lg:px-6 outline-none placeholder:text-center min-[350px]:placeholder:text-left w-full sm:w-80 md:w-96 lg:w-[432px] border-2 border-neutral-400 dark:border-neutral-700 hover:(border-transparent shadow-google) focus:(border-transparent shadow-google) dark:hover:(bg-neutral-700 border-neutral-700) dark:focus:(bg-neutral-700 border-neutral-700) placeholder:(text-neutral-400)"
 							autoCapitalize="off"
 							autoCorrect="off"
 							autoComplete="url"
@@ -135,8 +133,8 @@ export default function IsItCached({ data }: PageProps<Props>) {
 						</a>{' '}
 						is cached! 🥳
 					</div>
-					<div>
-						<CountDown url={data.found} source={data.on!} />
+					<div class="py-1">
+						<CountDown redirectTo={data.redirectTo!} />
 					</div>
 				</section>
 			)}

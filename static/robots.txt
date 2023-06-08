@@ -1,0 +1,12 @@
+User-agent: AdsBot-Google
+User-agent: AdsBot-Google-Mobile
+User-agent: Mediapartners-Google
+User-agent: GoogleOther
+User-agent: AdIdxBot
+User-agent: Baiduspider-ads
+User-agent: YandexAdNet
+User-agent: YandexDirect
+Disallow: /
+
+User-agent: *
+Allow: /
